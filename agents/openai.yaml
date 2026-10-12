@@ -1,0 +1,3 @@
+interface:
+  display_name: "社群净化工作台"
+  short_description: "分析微信群活跃度，生成净化候选名单与可复核的工作台"

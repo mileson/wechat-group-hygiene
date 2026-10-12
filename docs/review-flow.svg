@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="850" viewBox="0 0 1440 850" role="img" aria-labelledby="title desc"><title id="title">Review evidence before acting / 先看证据，再做决定</title><desc id="desc">Workflow diagram · fictional data only · 流程示意，未连接微信</desc><defs><marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0 0 L10 5 L0 10" fill="#24785b"/></marker></defs><rect width="100%" height="100%" fill="#f5f9f7"/><g font-family="Arial, PingFang SC, sans-serif" fill="#19392e">
+<text x="55" y="64" font-size="32" font-weight="700">Review evidence before acting / 先看证据，再做决定</text><text x="55" y="102" font-size="18" fill="#5e766d">Workflow diagram · fictional data only · 流程示意，未连接微信</text>
+<rect x="55" y="160" width="425" height="240" rx="18" fill="#fff" stroke="#d2e2da" stroke-width="2"/>
+<rect x="77" y="183" width="44" height="44" rx="12" fill="#e3f3e9" stroke="#d2e2da" stroke-width="2"/>
+<text x="91" y="213" font-size="22" fill="#19392e" font-weight="700">1</text>
+<text x="137" y="205" font-size="24" fill="#19392e" font-weight="700">Checked analysis</text>
+<text x="137" y="239" font-size="20" fill="#19392e" font-weight="400">已核验的单群分析</text>
+<text x="81" y="292" font-size="17" fill="#587065" font-weight="400">Stable group ID + name / 群身份</text>
+<text x="81" y="328" font-size="17" fill="#587065" font-weight="400">Reporting dates / 统计周期</text>
+<text x="81" y="364" font-size="17" fill="#587065" font-weight="400">Members + message evidence / 成员与证据</text>
+<path d="M485 275 L517 275" fill="none" stroke="#24785b" stroke-width="3" marker-end="url(#arrow)"/>
+<rect x="525" y="160" width="425" height="240" rx="18" fill="#fff" stroke="#d2e2da" stroke-width="2"/>
+<rect x="547" y="183" width="44" height="44" rx="12" fill="#e3f3e9" stroke="#d2e2da" stroke-width="2"/>
+<text x="561" y="213" font-size="22" fill="#19392e" font-weight="700">2</text>
+<text x="607" y="205" font-size="24" fill="#19392e" font-weight="700">Validate the input</text>
+<text x="607" y="239" font-size="20" fill="#19392e" font-weight="400">校验输入与人数</text>
+<text x="551" y="292" font-size="17" fill="#587065" font-weight="400">No default group / 不套用默认群</text>
+<text x="551" y="328" font-size="17" fill="#587065" font-weight="400">Unique member IDs / 账号不重复</text>
+<text x="551" y="364" font-size="17" fill="#587065" font-weight="400">Counts match rows / 人数与明细一致</text>
+<path d="M955 275 L987 275" fill="none" stroke="#24785b" stroke-width="3" marker-end="url(#arrow)"/>
+<rect x="995" y="160" width="425" height="240" rx="18" fill="#fff" stroke="#d2e2da" stroke-width="2"/>
+<rect x="1017" y="183" width="44" height="44" rx="12" fill="#e3f3e9" stroke="#d2e2da" stroke-width="2"/>
+<text x="1031" y="213" font-size="22" fill="#19392e" font-weight="700">3</text>
+<text x="1077" y="205" font-size="24" fill="#19392e" font-weight="700">Generate local HTML</text>
+<text x="1077" y="239" font-size="20" fill="#19392e" font-weight="400">生成离线工作台</text>
+<text x="1021" y="292" font-size="17" fill="#587065" font-weight="400">One file / 单文件打开</text>
+<text x="1021" y="328" font-size="17" fill="#587065" font-weight="400">Search + evidence / 搜索与证据</text>
+<text x="1021" y="364" font-size="17" fill="#587065" font-weight="400">Group-period scope / 群与周期隔离</text>
+<path d="M1208 405 L1208 465" fill="none" stroke="#24785b" stroke-width="3" marker-end="url(#arrow)"/>
+<rect x="55" y="470" width="655" height="220" rx="18" fill="#fff7ec" stroke="#edd4b2" stroke-width="2"/>
+<text x="82" y="510" font-size="26" fill="#19392e" font-weight="700">4  Moderator checks / 管理员复核</text>
+<text x="82" y="558" font-size="18" fill="#795d3b" font-weight="400">Inspect messages and identity / 看原消息与身份</text>
+<text x="82" y="598" font-size="18" fill="#795d3b" font-weight="400">Candidates → manual review / 候选进入人工核对</text>
+<text x="82" y="638" font-size="18" fill="#795d3b" font-weight="400">New, retained, exempt → review only / 保护成员只供复核</text>
+<rect x="745" y="470" width="640" height="220" rx="18" fill="#fff" stroke="#d2e2da" stroke-width="2"/>
+<text x="772" y="510" font-size="26" fill="#19392e" font-weight="700">5  Record + draft / 记录与公告</text>
+<text x="772" y="558" font-size="18" fill="#587065" font-weight="400">Local handled marks / 本地记录已完成跟进</text>
+<text x="772" y="598" font-size="18" fill="#587065" font-weight="400">Use actual counts / 填真实执行人数</text>
+<text x="772" y="638" font-size="18" fill="#587065" font-weight="400">Review and copy the draft / 检查后手动复制公告</text>
+<path d="M715 580 L735 580" fill="none" stroke="#24785b" stroke-width="3" marker-end="url(#arrow)"/>
+<rect x="55" y="735" width="1330" height="65" rx="12" fill="#e7f4ec" stroke="#bedbc9" stroke-width="2"/>
+<text x="82" y="775" font-size="23" fill="#19392e" font-weight="700">No collection · no removal · no sending  /  不采集微信、不移除成员、不发送公告</text>
+</g></svg>

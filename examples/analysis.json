@@ -1,0 +1,241 @@
+{
+  "chatroom_id": "demo-community@chatroom",
+  "group_name": "虚构演示社群",
+  "date_range": {
+    "start": "2026-01-01",
+    "end": "2026-01-31"
+  },
+  "members_total": 12,
+  "status_counts": {
+    "confirmed_inactive": 2,
+    "low_activity_needs_review": 2,
+    "confirmed_low_invalid": 1,
+    "low_activity_kept": 2,
+    "recent_joiner": 1,
+    "special_keep": 1,
+    "normal_activity": 2,
+    "excluded": 1
+  },
+  "rows": [
+    {
+      "username": "demo_member_01",
+      "display_name": "虚构成员 01",
+      "status": "confirmed_inactive",
+      "status_label": "无发言候选",
+      "message_count": 0,
+      "valid_count": 0,
+      "invalid_count": 0,
+      "replies_sent": 0,
+      "has_direct_dialogue": false,
+      "samples": []
+    },
+    {
+      "username": "demo_member_02",
+      "display_name": "虚构成员 02",
+      "status": "low_activity_needs_review",
+      "status_label": "需要人工复核",
+      "message_count": 2,
+      "valid_count": 1,
+      "invalid_count": 0,
+      "replies_sent": 1,
+      "has_direct_dialogue": true,
+      "samples": [
+        {
+          "time": "2026-01-20 10:00:00",
+          "quality": "valid",
+          "text": "[虚构演示] 这份说明是否需要补充使用场景？",
+          "reason": "[虚构演示] 留给管理员查看上下文后判断。"
+        }
+      ]
+    },
+    {
+      "username": "demo_member_03",
+      "display_name": "虚构成员 03",
+      "status": "confirmed_low_invalid",
+      "status_label": "少量低信息量发言",
+      "message_count": 2,
+      "valid_count": 0,
+      "invalid_count": 2,
+      "replies_sent": 0,
+      "has_direct_dialogue": false,
+      "samples": [
+        {
+          "time": "2026-01-20 10:00:00",
+          "quality": "invalid",
+          "text": "[虚构演示] 这份说明是否需要补充使用场景？",
+          "reason": "[虚构演示] 留给管理员查看上下文后判断。"
+        }
+      ]
+    },
+    {
+      "username": "demo_member_04",
+      "display_name": "虚构成员 04",
+      "status": "low_activity_kept",
+      "status_label": "低活跃但有效",
+      "message_count": 2,
+      "valid_count": 1,
+      "invalid_count": 0,
+      "replies_sent": 1,
+      "has_direct_dialogue": true,
+      "samples": [
+        {
+          "time": "2026-01-20 10:00:00",
+          "quality": "valid",
+          "text": "[虚构演示] 这份说明是否需要补充使用场景？",
+          "reason": "[虚构演示] 留给管理员查看上下文后判断。"
+        }
+      ]
+    },
+    {
+      "username": "demo_member_05",
+      "display_name": "虚构成员 05",
+      "status": "recent_joiner",
+      "status_label": "新加入",
+      "message_count": 2,
+      "valid_count": 1,
+      "invalid_count": 0,
+      "replies_sent": 1,
+      "has_direct_dialogue": true,
+      "samples": [
+        {
+          "time": "2026-01-20 10:00:00",
+          "quality": "valid",
+          "text": "[虚构演示] 这份说明是否需要补充使用场景？",
+          "reason": "[虚构演示] 留给管理员查看上下文后判断。"
+        }
+      ],
+      "joined_at": "2026-01-31 20:00:00"
+    },
+    {
+      "username": "demo_member_06",
+      "display_name": "虚构成员 06",
+      "status": "special_keep",
+      "status_label": "特殊保留",
+      "message_count": 2,
+      "valid_count": 1,
+      "invalid_count": 0,
+      "replies_sent": 1,
+      "has_direct_dialogue": true,
+      "samples": [
+        {
+          "time": "2026-01-20 10:00:00",
+          "quality": "valid",
+          "text": "[虚构演示] 这份说明是否需要补充使用场景？",
+          "reason": "[虚构演示] 留给管理员查看上下文后判断。"
+        }
+      ]
+    },
+    {
+      "username": "demo_member_07",
+      "display_name": "虚构成员 07",
+      "status": "normal_activity",
+      "status_label": "正常活跃",
+      "message_count": 16,
+      "valid_count": 1,
+      "invalid_count": 0,
+      "replies_sent": 1,
+      "has_direct_dialogue": true,
+      "samples": [
+        {
+          "time": "2026-01-20 10:00:00",
+          "quality": "valid",
+          "text": "[虚构演示] 这份说明是否需要补充使用场景？",
+          "reason": "[虚构演示] 留给管理员查看上下文后判断。"
+        }
+      ]
+    },
+    {
+      "username": "demo_member_08",
+      "display_name": "虚构成员 08",
+      "status": "excluded",
+      "status_label": "管理成员",
+      "message_count": 2,
+      "valid_count": 1,
+      "invalid_count": 0,
+      "replies_sent": 1,
+      "has_direct_dialogue": true,
+      "samples": [
+        {
+          "time": "2026-01-20 10:00:00",
+          "quality": "valid",
+          "text": "[虚构演示] 这份说明是否需要补充使用场景？",
+          "reason": "[虚构演示] 留给管理员查看上下文后判断。"
+        }
+      ]
+    },
+    {
+      "username": "demo_member_09",
+      "display_name": "虚构成员 09",
+      "status": "normal_activity",
+      "status_label": "正常活跃",
+      "message_count": 16,
+      "valid_count": 1,
+      "invalid_count": 0,
+      "replies_sent": 1,
+      "has_direct_dialogue": true,
+      "samples": [
+        {
+          "time": "2026-01-20 10:00:00",
+          "quality": "valid",
+          "text": "[虚构演示] 这份说明是否需要补充使用场景？",
+          "reason": "[虚构演示] 留给管理员查看上下文后判断。"
+        }
+      ]
+    },
+    {
+      "username": "demo_member_10",
+      "display_name": "虚构成员 10",
+      "status": "confirmed_inactive",
+      "status_label": "无发言候选",
+      "message_count": 0,
+      "valid_count": 0,
+      "invalid_count": 0,
+      "replies_sent": 0,
+      "has_direct_dialogue": false,
+      "samples": []
+    },
+    {
+      "username": "demo_member_11",
+      "display_name": "虚构成员 11",
+      "status": "low_activity_needs_review",
+      "status_label": "需要人工复核",
+      "message_count": 2,
+      "valid_count": 1,
+      "invalid_count": 0,
+      "replies_sent": 1,
+      "has_direct_dialogue": true,
+      "samples": [
+        {
+          "time": "2026-01-20 10:00:00",
+          "quality": "valid",
+          "text": "[虚构演示] 这份说明是否需要补充使用场景？",
+          "reason": "[虚构演示] 留给管理员查看上下文后判断。"
+        }
+      ]
+    },
+    {
+      "username": "demo_member_12",
+      "display_name": "虚构成员 12",
+      "status": "low_activity_kept",
+      "status_label": "低活跃但有效",
+      "message_count": 2,
+      "valid_count": 1,
+      "invalid_count": 0,
+      "replies_sent": 1,
+      "has_direct_dialogue": true,
+      "samples": [
+        {
+          "time": "2026-01-20 10:00:00",
+          "quality": "valid",
+          "text": "[虚构演示] 这份说明是否需要补充使用场景？",
+          "reason": "[虚构演示] 留给管理员查看上下文后判断。"
+        }
+      ]
+    }
+  ],
+  "announcement_context": {
+    "community_label": "虚构演示社群",
+    "closing": "此页仅用于演示，请勿用于真实成员判断。",
+    "policy_text": ""
+  }
+}
