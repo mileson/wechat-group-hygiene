@@ -8,6 +8,14 @@ Repeatedly jumping between member lists, messages, and a spreadsheet makes commu
 
 This release is an **offline review tool**. It does not collect WeChat data, determine who should be removed, send announcements, or remove members. Real-time collection is outside this release. The earlier collector used an older CLI interface and is intentionally excluded; see [collection boundaries](docs/collection-boundaries.md).
 
+## See the workbench
+
+![Member review with anonymized demo identities](docs/screenshots/workbench-preview.png)
+
+Each card brings together activity counts, a review checkbox and **查看证据** (View evidence). Inspect the evidence before deciding, then record the follow-up after handling it outside the workbench.
+
+This teaching preview uses simulated member labels and IDs with message text hidden. It shows the review layout, not a real member list. The runnable repository demo uses its own fictional dataset.
+
 ![From an analysis report to a reviewed decision](docs/review-flow.svg)
 
 ## Typical situations
