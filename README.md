@@ -1,141 +1,126 @@
-# Community Review Workbench
+# 社群成员复核工作台
 
-[简体中文](README.zh-CN.md) · [Input contract](references/review_workbench_contract.md) · [Synthetic demo](examples/analysis.json)
+[完整输入契约](references/review_workbench_contract.md) · [虚构示例数据](examples/analysis.json)
 
-**Turn an already checked group-activity report into a local page where you can inspect message evidence, select members for review, record follow-ups, and prepare an announcement.**
+**把已经核验的群活跃度报告变成一个本地页面，集中看证据、选成员、记录跟进，再准备公告。**
 
-Repeatedly jumping between member lists, messages, and a spreadsheet makes community review hard to finish. This workbench keeps the evidence and your decisions together. You provide a single-group analysis JSON; it produces one self-contained HTML file. Open it locally and review at your own pace.
+做一次成员复核，往往要在名单、聊天记录和表格之间来回找。这个工作台把依据和处理记录放在一起。你提供一份单群分析 JSON，它生成一个独立 HTML 文件，直接在浏览器打开，按自己的节奏复核。
 
-This release is an **offline review tool**. It does not collect WeChat data, determine who should be removed, send announcements, or remove members. Real-time collection is outside this release. The earlier collector used an older CLI interface and is intentionally excluded; see [collection boundaries](docs/collection-boundaries.md).
+本次开源提供的是**离线复核工作台**。它不采集微信数据、不自行判断谁该移出、不发送公告，也不移除成员。实时采集不在当前版本中；旧采集器使用了旧版命令接口，本仓库没有打包。具体边界见[采集说明](docs/collection-boundaries.md)。
 
-[What it can do](#readme-section-1) · [See the workbench](#readme-section-2) · [Typical situations](#readme-section-3) · [Try it with fictional data](#readme-section-4) · [Input and output](#readme-section-5) · [Use as an Agent Skill](#readme-section-6) · [Questions beginners often ask](#readme-section-8)
+[详细能力清单](#readme-section-1) · [工作台效果](#readme-section-2) · [输入、输出与 Skill 安装](#readme-section-3) · [先用虚构数据跑一遍](#readme-section-5) · [什么时候用得上](#readme-section-6) · [仓库导航](#readme-section-8) · [测试与贡献](#readme-section-9)
 
 <a id="readme-section-1"></a>
 
-## What it can do
+## 详细能力清单
 
-![A guide to the review controls and decision boundaries](docs/workbench-guide.svg)
+![工作台控件与人工判断边界](docs/workbench-guide.svg)
 
-| Capability | What you get | What remains your responsibility |
+| 能力 | 能帮你完成什么 | 使用时要核对什么 |
 | --- | --- | --- |
-| Single-file output | Embedded styles and scripts; no external page dependencies | Keep the file and the underlying data private |
-| Activity overview | Member counts and supplied status totals | Verify the collection scope and source totals first |
-| Leaderboard | Up to 10 members with messages, sorted by message count, then valid count and stable username | Message volume is not a quality score |
-| Review cards | Message, valid/invalid, and reply counts; latest sample; supplied status | Supply the classifications; the renderer does not infer them |
-| Evidence dialog | Escaped message text, times, reasons, and optional AI-review explanation | Check context and identity before acting |
-| Search and filters | Search by display name or username; keyboard-operable status selector | A hidden card is still included in its section's select-all operation |
-| Batch selection | Select/unselect the whole candidate section, including filtered cards | Inspect the resulting shortlist |
-| Protected review | Newcomers, special-keep, and excluded members enter a separate review-only area | Maintain the protection policy in your analysis source |
-| Follow-up records | Local handled/unhandled marks; removing a card from the shortlist preserves its previous mark | These are browser records, not a confirmation of WeChat actions |
-| Announcement draft | Editable dates, counts, optional rules, and a copy action; rate = actual removed / original member count | Supply valid numbers and check wording before copying |
-| Group isolation | Full group ID + reporting period in storage keys; group name + full-ID digest in output filenames | Provide a stable group ID and name; neither has a default |
-| Input gates | Reject missing metrics, duplicate usernames, invalid dates, mismatched totals, or conflicting identities | A structurally valid report may still contain incomplete or incorrect source evidence |
-| Atomic output | Validation occurs before writing; successful writes use a temporary file and atomic replacement | Preserve your source analysis and backups |
+| 单文件交付 | 样式和交互都在 HTML 内，离线打开 | 妥善保管含真实信息的页面 |
+| 活跃度概览 | 显示成员总数与输入状态人数 | 先核验采集范围和源数据总量 |
+| 发言活跃榜 | 展示有发言的前 10 位，按发言数、有效数、稳定账号排序 | 发言量不能代表内容质量 |
+| 成员审查卡 | 发言、有效、无效、回复数，最近消息与输入状态 | 分类由你的分析报告提供，渲染器不推断 |
+| 证据弹窗 | 查看消息时间、原文、判断理由和可选 AI 复核说明 | 结合上下文和身份再做决定 |
+| 搜索和状态筛选 | 按显示名、账号查找；状态下拉支持键盘 | 模块全选会包含暂时被筛选隐藏的卡片 |
+| 批量勾选 | 一次选中或取消整个候选模块 | 在二级页面检查实际名单 |
+| 保护成员复核 | 新加入、特殊保留、长期豁免进入独立复核区 | 在上游报告中维护本群保护规则 |
+| 本地跟进记录 | 已处理标记、移出名单后保留历史标记 | 标记只是浏览器记录，不能证明微信已操作 |
+| 公告草稿 | 修改日期、人数和附加规则，计算实际净化率，再复制 | 填真实执行人数，逐项检查措辞 |
+| 群与周期隔离 | 存储键使用完整群 ID 和周期；文件名含群名与完整 ID 摘要 | 群 ID 与群名必须提供，没有默认群 |
+| 输入校验 | 拦截缺失指标、重复账号、无效日期、人数不符和群身份冲突 | 通过格式校验不代表采集数据正确完整 |
+| 安全写入 | 先校验，成功后通过临时文件原子替换输出 | 自行保留源分析和备份 |
 
 <a id="readme-section-2"></a>
 
-## See the workbench
+## 工作台效果
 
-![Member review with anonymized demo identities](docs/screenshots/workbench-preview.png)
+![模拟成员数据的复核工作台](docs/screenshots/workbench-preview.png)
 
-Each card brings together activity counts, a review checkbox and **查看证据** (View evidence). Inspect the evidence before deciding, then record the follow-up after handling it outside the workbench.
+每张成员卡片把发言统计、复核勾选和“查看证据”放在一起。先看依据，再决定是否跟进；在其他地方处理完成后，回到工作台记录进度。
 
-This teaching preview uses simulated member labels and IDs with message text hidden. It shows the review layout, not a real member list. The runnable repository demo uses its own fictional dataset.
+这张课件演示图使用模拟成员名称与 ID，发言内容已隐藏，用来展示复核界面。仓库里可运行的示例使用独立的虚构数据。
 
-![From an analysis report to a reviewed decision](docs/review-flow.svg)
+![从分析报告到人工复核的完整流程](docs/review-flow.svg)
 
 <a id="readme-section-3"></a>
 
-## Typical situations
+## 输入、输出与 Skill 安装
 
-- A moderator has a monthly activity report and wants to review silent or low-activity members with their message evidence before contacting anyone.
-- A community manager needs a separate place for uncertain identities, newcomers, administrators, and members who should be retained.
-- Two groups share the same display name. The manager needs distinct files and browser state, so one group's selections do not appear in another.
-- Several review sessions happen over a week. Local selection, follow-up marks, and announcement drafts should survive reopening the same file in the same browser context.
+从 [examples/analysis.json](examples/analysis.json) 对照[完整契约](references/review_workbench_contract.md)准备数据。每位成员需要稳定账号、显示名、支持的状态、四个非负计数、互动标记和消息证据。0 表示确定没有，不要用它填补未知。
+
+支持状态为 `confirmed_inactive`、`confirmed_low_invalid`、`low_activity_needs_review`、`low_activity_kept`、`recent_joiner`、`special_keep`、`normal_activity`、`excluded`。
+
+输出只有一个 HTML 文件，不含名单导出按钮或账号自动操作。浏览器允许时，本地保存勾选、处理标记和公告草稿。
+
+要作为 Agent Skill 使用，将本仓库复制到你的 Agent 技能目录，目录名为 `wechat-group-hygiene`，按对应工具的技能加载机制启用。[SKILL.md](SKILL.md) 是执行入口。也可以直接运行脚本，无需 AI Agent。
+
+示例请求：
+
+> 根据这份已核验的单群分析 JSON 生成本地复核工作台。新成员和保护成员只供复核，不连接微信，不做任何账号操作。
 
 <a id="readme-section-4"></a>
 
-## Try it with fictional data
+## 新手常见问题
 
-Install Python 3.10 or newer. The renderer uses only Python's standard library; no account, API key, package installation, or WeChat access is needed for this demo. Node.js is optional for the interaction tests.
+**不连接微信也能用吗？** 可以。演示和渲染器完全离线运行。处理自己的群时，需要你通过独立维护的采集流程提供已核验报告。
 
-1. Download this repository with **Code → Download ZIP**, unzip it, and open a terminal in the extracted directory. Or clone it:
+**会自动找出不活跃成员吗？** 不会。每位成员的状态来自输入报告，页面负责整理状态和证据，方便管理员判断。
+
+**“已在微信处理”代表真的移出了吗？** 不代表。这是本地记录。先在实际环境完成决定和操作，再按需要记录。
+
+**豁免成员会误进待处理区吗？** 新成员、特殊保留、豁免成员可以勾选查看，但只出现在保护复核区，没有处理开关。
+
+**为什么 JSON 被拒绝？** 常见原因是缺少群身份、不支持的状态、缺少计数、重复账号、无效日期、人数和明细不符。按错误修正源数据，不要为了通过校验编造数值。
+
+**能同时看几个群吗？** 每个群生成一份页面即可。状态按完整群 ID 与周期隔离。这个渲染器不做跨群统计合并。
+
+**为什么勾选没保存？** 记录依赖浏览器本地存储与文件来源处理。换浏览器、隐身模式、清除存储、文件改名或浏览器禁用存储，都可能影响持久化。没有云备份或跨设备同步。
+
+**另一个管理员能看到我的处理记录吗？** 不会自动同步。对方打开页面副本后使用自己的浏览器记录。这是个人复核工作台。
+
+**能把生成页面公开吗？** 真实页面含成员身份和消息片段，应本地保存或只给有权限的人查看。公开演示必须使用完全虚构的数据。
+
+**测试是否代表微信或真实浏览器已验证？** 不代表。测试检查生成标记和合成交互状态，不打开浏览器，不连接微信。正式使用前，请在自己的环境检查页面。
+
+<a id="readme-section-5"></a>
+
+## 先用虚构数据跑一遍
+
+准备 Python 3.10 或更新版本。渲染器只用 Python 标准库；这个演示不需要账号、密钥、安装额外依赖或读取微信。Node.js 只用于可选的交互测试。
+
+1. 点击仓库的 **Code → Download ZIP**，解压后在该目录打开终端。也可以用 Git：
 
    ```bash
    git clone https://github.com/mileson/wechat-group-hygiene.git
    cd wechat-group-hygiene
    ```
 
-2. Generate a page using the clearly labeled fictional example:
+2. 生成演示页面：
 
    ```bash
    python3 -B scripts/demo.py
    ```
 
-3. Open `examples/demo-workbench.html` in a browser. You should see 12 fictional members, several activity categories, and a message-activity leaderboard. The file is generated locally and ignored by Git.
-4. Search for a member, inspect **查看证据** (View evidence), select a review card, and click **前往净化 →** (Open review list). Newcomers and protected members are kept in the review-only section.
-5. Mark a follow-up as handled only after you actually complete it outside this tool. Open the announcement dialog, fill in the actual numbers, review the draft, then copy it manually.
+3. 用浏览器打开 `examples/demo-workbench.html`。你会看到 12 位虚构成员、不同活动状态和发言活跃榜。页面在本地生成，Git 会忽略它。
+4. 搜索成员，点击“查看证据”，勾选需要复核的卡片，再点击“前往净化 →”。新成员与保护成员会进入“仅供复核”区域。
+5. 在其他地方完成真实跟进后，再记录“已在微信处理”。打开群公告弹窗，填实际人数，检查预览，再手动复制。
 
-The generated interface is currently Chinese. The documentation is available in English and Chinese. The demo is illustrative and contains no real members or chat history.
-
-<a id="readme-section-5"></a>
-
-## Input and output
-
-The [complete contract](references/review_workbench_contract.md) explains all fields. Start with [examples/analysis.json](examples/analysis.json). A member row includes a stable `username`, a display name, one supported status, four nonnegative activity counters, an interaction flag, and message evidence. Zero means a known zero; do not substitute it for missing information.
-
-Supported statuses: `confirmed_inactive`, `confirmed_low_invalid`, `low_activity_needs_review`, `low_activity_kept`, `recent_joiner`, `special_keep`, `normal_activity`, `excluded`.
-
-Output is one HTML file. No selection-export button or automated account action is included. Announcements and review state are stored locally in the browser when storage is available.
+当前工作台界面为中文，说明文档提供中英文。演示只用于理解操作，没有真实成员或聊天记录。
 
 <a id="readme-section-6"></a>
 
-## Use as an Agent Skill
+## 什么时候用得上
 
-Copy the repository into your agent's skill directory as `wechat-group-hygiene`, following that agent's skill-loading mechanism. The entry point is [SKILL.md](SKILL.md). You can also use the command-line renderer directly without an AI agent. Example request:
-
-> Use this verified single-group analysis JSON to create a local review workbench. Keep newcomers and protected members review-only. Do not connect to WeChat or perform any account actions.
+- 你手里有月度活跃度报告，准备先核对无发言、低活跃成员的消息证据，再决定是否联系对方。
+- 新成员、管理员、特殊保留成员和身份有疑问的成员，需要单独看，不能混进待处理名单。
+- 两个群名字一样，希望输出文件和浏览器记录各自隔离，避免串群。
+- 一次复核分几天完成，希望再次打开同一个页面时，能继续看之前的勾选、跟进标记和公告草稿。
 
 <a id="readme-section-7"></a>
 
-## Repository map
-
-| Entry | Contents |
-| --- | --- |
-| [`SKILL.md`](SKILL.md) | Agent instructions and entry point |
-| [`docs/`](docs/) | Project documentation and references |
-| [`examples/`](examples/) | Example inputs and usage |
-| [`references/`](references/) | Skill rules and input/output contracts |
-| [`scripts/`](scripts/) | Development and maintenance scripts |
-| [`tests/`](tests/) | Automated tests |
-
-<a id="readme-section-8"></a>
-
-## Questions beginners often ask
-
-**Can I use it without connecting WeChat?** Yes. The fictional demo and renderer run entirely offline. For your own community, provide an analysis report that you have already checked through an independently maintained collection process.
-
-**Does it find inactive members automatically?** No. The report supplies each member's status. The page organizes that status and its evidence so a moderator can decide.
-
-**Does “handled” mean the member was removed in WeChat?** No. It is a local note. Make the real decision and action separately, then record it if appropriate.
-
-**Will an excluded member accidentally join the actionable list?** Newcomers, special-keep, and excluded members can be selected for inspection but appear only in the protected section and have no processing toggle.
-
-**Why was my JSON rejected?** Common causes are missing group identity, unknown statuses, missing counters, duplicate usernames, invalid date ranges, or totals that do not match the rows. Read the error and fix the source; don't invent values just to pass validation.
-
-**Can I review several groups?** Generate one file per group. State is scoped to the full group ID and date range. Cross-group statistical merging is not included in this renderer.
-
-**Why did my selections disappear?** State depends on the browser's local storage and origin/file handling. Another browser, private browsing, clearing storage, a renamed file, or storage being blocked can change persistence. There is no server backup or cross-device sync.
-
-**Can another moderator see my selections?** Not automatically. Opening a copy gives that moderator their own browser state; this is a personal review workbench rather than collaborative cloud software.
-
-**Can I publish the resulting page?** A real report contains member identities and message excerpts. Keep it local or share it only with the people authorized to see that information. Public examples must be fully synthetic.
-
-**Does this validate WeChat collection or the browser display?** No. The bundled tests check generated markup and synthetic interaction state without opening a browser or connecting WeChat. Inspect the resulting page in your own environment before operational use.
-
-<a id="readme-section-9"></a>
-
-## Use your own checked report
+## 换成自己的已核验报告
 
 ```bash
 python3 -B scripts/render_review_workbench.py \
@@ -143,34 +128,41 @@ python3 -B scripts/render_review_workbench.py \
   --output-html ./private-review.html
 ```
 
-Both `chatroom_id` and `group_name` must be in the JSON or explicitly provided:
+JSON 中必须有 `chatroom_id` 和 `group_name`，也可以显式提供：
 
 ```bash
 python3 -B scripts/render_review_workbench.py \
   --analysis-json ./private-analysis.json \
   --chatroom-id 'YOUR_STABLE_GROUP_ID' \
-  --group-name 'Your community' \
+  --group-name '你的社群名称' \
   --output-html ./private-review.html
 ```
 
-Explicit values must match any identity already in the JSON. Missing identity is an error: the tool never silently chooses a group. Without `--output-html`, the output goes beside the input, with a group-specific filename.
+显式值必须和 JSON 已有身份一致。缺少身份会报错，不会悄悄套用某个群。省略输出路径时，页面生成在输入文件旁边，文件名按群隔离。
 
-Before using real data, independently check the message total and complete pagination, the current member baseline, sender-to-member mapping, ambiguous identities, date range, and exemptions. Successful rendering confirms the input shape and supplied totals only. The tool cannot inspect those upstream checks.
+真实使用前，先独立检查消息总量与分页结束、当前成员基线、发送者到成员的映射、重名与歧义、统计周期、豁免名单。页面成功生成只说明输入格式和提供的人数对账通过，工具不能代替这些上游核验。
 
-<a id="readme-section-10"></a>
+<a id="readme-section-8"></a>
 
-## Development and verification
+## 仓库导航
+
+| 入口 | 内容 |
+| --- | --- |
+| [`SKILL.md`](SKILL.md) | Agent 使用规则与执行入口 |
+| [`docs/`](docs/) | 项目说明与参考文档 |
+| [`examples/`](examples/) | 可参考的输入与调用示例 |
+| [`references/`](references/) | 技能规则与输入输出合同 |
+| [`scripts/`](scripts/) | 开发与维护脚本 |
+| [`tests/`](tests/) | 自动化测试 |
+
+<a id="readme-section-9"></a>
+
+## 测试与贡献
 
 ```bash
 python3 -B -m unittest discover -s tests -p 'test_render_review_workbench.py' -v
 ```
 
-The test suite covers input gates, identity isolation, safe rendering, leaderboard ordering, protected members, output preservation, and local interactions. Node.js, when present, runs the bundled synthetic-DOM interaction checks; otherwise that check is explicitly skipped. No browser, server, or WeChat session is started.
+测试覆盖输入门槛、身份隔离、文本安全、榜单排序、保护成员、输出保留和本地交互。装有 Node.js 时会跑合成 DOM 交互测试；缺失时明确跳过。不会启动浏览器、服务或微信会话。
 
-<a id="readme-section-11"></a>
-
-## Privacy and contributions
-
-Only fictional member data is bundled. There are no group defaults, personal exemption lists, private execution history, credentials, or inherited Git history. Keep real analyses, output pages, and account configuration outside the repository. Do not attach private reports to issues. Share a small synthetic reproduction instead.
-
-See [CONTRIBUTING.md](CONTRIBUTING.md) and [SECURITY.md](SECURITY.md). Licensed under [MIT](LICENSE), copyright 2026 mileson.
+仓库只包含虚构数据，没有默认群、私人豁免名单、执行历史或凭证。真实分析、输出页面和账号配置应放在仓库外。提交问题时，用最小虚构示例复现。见 [贡献说明](CONTRIBUTING.md) 和 [安全说明](SECURITY.md)。采用 [MIT](LICENSE) 许可证，2026 mileson。
