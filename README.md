@@ -8,6 +8,32 @@ Repeatedly jumping between member lists, messages, and a spreadsheet makes commu
 
 This release is an **offline review tool**. It does not collect WeChat data, determine who should be removed, send announcements, or remove members. Real-time collection is outside this release. The earlier collector used an older CLI interface and is intentionally excluded; see [collection boundaries](docs/collection-boundaries.md).
 
+[What it can do](#readme-section-1) · [See the workbench](#readme-section-2) · [Typical situations](#readme-section-3) · [Try it with fictional data](#readme-section-4) · [Input and output](#readme-section-5) · [Use as an Agent Skill](#readme-section-6) · [Questions beginners often ask](#readme-section-8)
+
+<a id="readme-section-1"></a>
+
+## What it can do
+
+![A guide to the review controls and decision boundaries](docs/workbench-guide.svg)
+
+| Capability | What you get | What remains your responsibility |
+| --- | --- | --- |
+| Single-file output | Embedded styles and scripts; no external page dependencies | Keep the file and the underlying data private |
+| Activity overview | Member counts and supplied status totals | Verify the collection scope and source totals first |
+| Leaderboard | Up to 10 members with messages, sorted by message count, then valid count and stable username | Message volume is not a quality score |
+| Review cards | Message, valid/invalid, and reply counts; latest sample; supplied status | Supply the classifications; the renderer does not infer them |
+| Evidence dialog | Escaped message text, times, reasons, and optional AI-review explanation | Check context and identity before acting |
+| Search and filters | Search by display name or username; keyboard-operable status selector | A hidden card is still included in its section's select-all operation |
+| Batch selection | Select/unselect the whole candidate section, including filtered cards | Inspect the resulting shortlist |
+| Protected review | Newcomers, special-keep, and excluded members enter a separate review-only area | Maintain the protection policy in your analysis source |
+| Follow-up records | Local handled/unhandled marks; removing a card from the shortlist preserves its previous mark | These are browser records, not a confirmation of WeChat actions |
+| Announcement draft | Editable dates, counts, optional rules, and a copy action; rate = actual removed / original member count | Supply valid numbers and check wording before copying |
+| Group isolation | Full group ID + reporting period in storage keys; group name + full-ID digest in output filenames | Provide a stable group ID and name; neither has a default |
+| Input gates | Reject missing metrics, duplicate usernames, invalid dates, mismatched totals, or conflicting identities | A structurally valid report may still contain incomplete or incorrect source evidence |
+| Atomic output | Validation occurs before writing; successful writes use a temporary file and atomic replacement | Preserve your source analysis and backups |
+
+<a id="readme-section-2"></a>
+
 ## See the workbench
 
 ![Member review with anonymized demo identities](docs/screenshots/workbench-preview.png)
@@ -18,12 +44,16 @@ This teaching preview uses simulated member labels and IDs with message text hid
 
 ![From an analysis report to a reviewed decision](docs/review-flow.svg)
 
+<a id="readme-section-3"></a>
+
 ## Typical situations
 
 - A moderator has a monthly activity report and wants to review silent or low-activity members with their message evidence before contacting anyone.
 - A community manager needs a separate place for uncertain identities, newcomers, administrators, and members who should be retained.
 - Two groups share the same display name. The manager needs distinct files and browser state, so one group's selections do not appear in another.
 - Several review sessions happen over a week. Local selection, follow-up marks, and announcement drafts should survive reopening the same file in the same browser context.
+
+<a id="readme-section-4"></a>
 
 ## Try it with fictional data
 
@@ -48,47 +78,7 @@ Install Python 3.10 or newer. The renderer uses only Python's standard library; 
 
 The generated interface is currently Chinese. The documentation is available in English and Chinese. The demo is illustrative and contains no real members or chat history.
 
-## What it can do
-
-![A guide to the review controls and decision boundaries](docs/workbench-guide.svg)
-
-| Capability | What you get | What remains your responsibility |
-| --- | --- | --- |
-| Single-file output | Embedded styles and scripts; no external page dependencies | Keep the file and the underlying data private |
-| Activity overview | Member counts and supplied status totals | Verify the collection scope and source totals first |
-| Leaderboard | Up to 10 members with messages, sorted by message count, then valid count and stable username | Message volume is not a quality score |
-| Review cards | Message, valid/invalid, and reply counts; latest sample; supplied status | Supply the classifications; the renderer does not infer them |
-| Evidence dialog | Escaped message text, times, reasons, and optional AI-review explanation | Check context and identity before acting |
-| Search and filters | Search by display name or username; keyboard-operable status selector | A hidden card is still included in its section's select-all operation |
-| Batch selection | Select/unselect the whole candidate section, including filtered cards | Inspect the resulting shortlist |
-| Protected review | Newcomers, special-keep, and excluded members enter a separate review-only area | Maintain the protection policy in your analysis source |
-| Follow-up records | Local handled/unhandled marks; removing a card from the shortlist preserves its previous mark | These are browser records, not a confirmation of WeChat actions |
-| Announcement draft | Editable dates, counts, optional rules, and a copy action; rate = actual removed / original member count | Supply valid numbers and check wording before copying |
-| Group isolation | Full group ID + reporting period in storage keys; group name + full-ID digest in output filenames | Provide a stable group ID and name; neither has a default |
-| Input gates | Reject missing metrics, duplicate usernames, invalid dates, mismatched totals, or conflicting identities | A structurally valid report may still contain incomplete or incorrect source evidence |
-| Atomic output | Validation occurs before writing; successful writes use a temporary file and atomic replacement | Preserve your source analysis and backups |
-
-## Use your own checked report
-
-```bash
-python3 -B scripts/render_review_workbench.py \
-  --analysis-json ./private-analysis.json \
-  --output-html ./private-review.html
-```
-
-Both `chatroom_id` and `group_name` must be in the JSON or explicitly provided:
-
-```bash
-python3 -B scripts/render_review_workbench.py \
-  --analysis-json ./private-analysis.json \
-  --chatroom-id 'YOUR_STABLE_GROUP_ID' \
-  --group-name 'Your community' \
-  --output-html ./private-review.html
-```
-
-Explicit values must match any identity already in the JSON. Missing identity is an error: the tool never silently chooses a group. Without `--output-html`, the output goes beside the input, with a group-specific filename.
-
-Before using real data, independently check the message total and complete pagination, the current member baseline, sender-to-member mapping, ambiguous identities, date range, and exemptions. Successful rendering confirms the input shape and supplied totals only. The tool cannot inspect those upstream checks.
+<a id="readme-section-5"></a>
 
 ## Input and output
 
@@ -98,11 +88,28 @@ Supported statuses: `confirmed_inactive`, `confirmed_low_invalid`, `low_activity
 
 Output is one HTML file. No selection-export button or automated account action is included. Announcements and review state are stored locally in the browser when storage is available.
 
+<a id="readme-section-6"></a>
+
 ## Use as an Agent Skill
 
 Copy the repository into your agent's skill directory as `wechat-group-hygiene`, following that agent's skill-loading mechanism. The entry point is [SKILL.md](SKILL.md). You can also use the command-line renderer directly without an AI agent. Example request:
 
 > Use this verified single-group analysis JSON to create a local review workbench. Keep newcomers and protected members review-only. Do not connect to WeChat or perform any account actions.
+
+<a id="readme-section-7"></a>
+
+## Repository map
+
+| Entry | Contents |
+| --- | --- |
+| [`SKILL.md`](SKILL.md) | Agent instructions and entry point |
+| [`docs/`](docs/) | Project documentation and references |
+| [`examples/`](examples/) | Example inputs and usage |
+| [`references/`](references/) | Skill rules and input/output contracts |
+| [`scripts/`](scripts/) | Development and maintenance scripts |
+| [`tests/`](tests/) | Automated tests |
+
+<a id="readme-section-8"></a>
 
 ## Questions beginners often ask
 
@@ -126,6 +133,32 @@ Copy the repository into your agent's skill directory as `wechat-group-hygiene`,
 
 **Does this validate WeChat collection or the browser display?** No. The bundled tests check generated markup and synthetic interaction state without opening a browser or connecting WeChat. Inspect the resulting page in your own environment before operational use.
 
+<a id="readme-section-9"></a>
+
+## Use your own checked report
+
+```bash
+python3 -B scripts/render_review_workbench.py \
+  --analysis-json ./private-analysis.json \
+  --output-html ./private-review.html
+```
+
+Both `chatroom_id` and `group_name` must be in the JSON or explicitly provided:
+
+```bash
+python3 -B scripts/render_review_workbench.py \
+  --analysis-json ./private-analysis.json \
+  --chatroom-id 'YOUR_STABLE_GROUP_ID' \
+  --group-name 'Your community' \
+  --output-html ./private-review.html
+```
+
+Explicit values must match any identity already in the JSON. Missing identity is an error: the tool never silently chooses a group. Without `--output-html`, the output goes beside the input, with a group-specific filename.
+
+Before using real data, independently check the message total and complete pagination, the current member baseline, sender-to-member mapping, ambiguous identities, date range, and exemptions. Successful rendering confirms the input shape and supplied totals only. The tool cannot inspect those upstream checks.
+
+<a id="readme-section-10"></a>
+
 ## Development and verification
 
 ```bash
@@ -133,6 +166,8 @@ python3 -B -m unittest discover -s tests -p 'test_render_review_workbench.py' -v
 ```
 
 The test suite covers input gates, identity isolation, safe rendering, leaderboard ordering, protected members, output preservation, and local interactions. Node.js, when present, runs the bundled synthetic-DOM interaction checks; otherwise that check is explicitly skipped. No browser, server, or WeChat session is started.
+
+<a id="readme-section-11"></a>
 
 ## Privacy and contributions
 
