@@ -1,4 +1,21 @@
-# 社群成员复核工作台
+<a id="社群成员复核工作台"></a>
+
+<div align="center">
+
+# 社群成员复核 · 离线工作台
+
+**把已核验的活跃度报告变成可查看证据和记录跟进的页面。**
+
+证据查阅 · 成员复核 · 跟进记录 · 公告准备
+
+[![中文说明](https://img.shields.io/badge/%E8%AF%B4%E6%98%8E-%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87-059669)](#readme-detail-11)
+[![项目类型](https://img.shields.io/badge/%E9%A1%B9%E7%9B%AE-Skill-6366f1)](#readme-detail-11)
+
+[✨ 核心特性](#readme-detail-11) · [👀 效果预览](#readme-detail-13) · [✅ 适用场景](#readme-detail-21) · [🚀 输入输出与安装](#readme-detail-15) · [🧩 模块速查](#readme-detail-25) · [❓ 新手常见问题](#readme-detail-17)
+
+</div>
+
+---
 
 [完整输入契约](references/review_workbench_contract.md) · [虚构示例数据](examples/analysis.json)
 
@@ -8,11 +25,13 @@
 
 本次开源提供的是**离线复核工作台**。它不采集微信数据、不自行判断谁该移出、不发送公告，也不移除成员。实时采集不在当前版本中；旧采集器使用了旧版命令接口，本仓库没有打包。具体边界见[采集说明](docs/collection-boundaries.md)。
 
-[详细能力清单](#readme-section-1) · [工作台效果](#readme-section-2) · [输入、输出与 Skill 安装](#readme-section-3) · [先用虚构数据跑一遍](#readme-section-5) · [什么时候用得上](#readme-section-6) · [仓库导航](#readme-section-8) · [测试与贡献](#readme-section-9)
-
 <a id="readme-section-1"></a>
 
-## 详细能力清单
+<a id="详细能力清单"></a>
+
+<a id="readme-detail-11"></a>
+
+## ✨ 核心特性
 
 ![工作台控件与人工判断边界](docs/workbench-guide.svg)
 
@@ -34,7 +53,11 @@
 
 <a id="readme-section-2"></a>
 
-## 工作台效果
+<a id="工作台效果"></a>
+
+<a id="readme-detail-13"></a>
+
+## 👀 效果预览
 
 ![模拟成员数据的复核工作台](docs/screenshots/workbench-preview.png)
 
@@ -44,9 +67,26 @@
 
 ![从分析报告到人工复核的完整流程](docs/review-flow.svg)
 
+<a id="readme-section-6"></a>
+
+<a id="什么时候用得上"></a>
+
+<a id="readme-detail-21"></a>
+
+## ✅ 适用场景
+
+- 你手里有月度活跃度报告，准备先核对无发言、低活跃成员的消息证据，再决定是否联系对方。
+- 新成员、管理员、特殊保留成员和身份有疑问的成员，需要单独看，不能混进待处理名单。
+- 两个群名字一样，希望输出文件和浏览器记录各自隔离，避免串群。
+- 一次复核分几天完成，希望再次打开同一个页面时，能继续看之前的勾选、跟进标记和公告草稿。
+
 <a id="readme-section-3"></a>
 
-## 输入、输出与 Skill 安装
+<a id="输入输出与-skill-安装"></a>
+
+<a id="readme-detail-15"></a>
+
+## 🚀 输入输出与安装
 
 从 [examples/analysis.json](examples/analysis.json) 对照[完整契约](references/review_workbench_contract.md)准备数据。每位成员需要稳定账号、显示名、支持的状态、四个非负计数、互动标记和消息证据。0 表示确定没有，不要用它填补未知。
 
@@ -62,7 +102,11 @@
 
 <a id="readme-section-4"></a>
 
-## 新手常见问题
+<a id="新手常见问题"></a>
+
+<a id="readme-detail-17"></a>
+
+## ❓ 新手常见问题
 
 **不连接微信也能用吗？** 可以。演示和渲染器完全离线运行。处理自己的群时，需要你通过独立维护的采集流程提供已核验报告。
 
@@ -86,7 +130,11 @@
 
 <a id="readme-section-5"></a>
 
-## 先用虚构数据跑一遍
+<a id="先用虚构数据跑一遍"></a>
+
+<a id="readme-detail-19"></a>
+
+## 🚀 先运行虚构数据演示
 
 准备 Python 3.10 或更新版本。渲染器只用 Python 标准库；这个演示不需要账号、密钥、安装额外依赖或读取微信。Node.js 只用于可选的交互测试。
 
@@ -107,20 +155,15 @@
 4. 搜索成员，点击“查看证据”，勾选需要复核的卡片，再点击“前往净化 →”。新成员与保护成员会进入“仅供复核”区域。
 5. 在其他地方完成真实跟进后，再记录“已在微信处理”。打开群公告弹窗，填实际人数，检查预览，再手动复制。
 
-当前工作台界面为中文，说明文档提供中英文。演示只用于理解操作，没有真实成员或聊天记录。
-
-<a id="readme-section-6"></a>
-
-## 什么时候用得上
-
-- 你手里有月度活跃度报告，准备先核对无发言、低活跃成员的消息证据，再决定是否联系对方。
-- 新成员、管理员、特殊保留成员和身份有疑问的成员，需要单独看，不能混进待处理名单。
-- 两个群名字一样，希望输出文件和浏览器记录各自隔离，避免串群。
-- 一次复核分几天完成，希望再次打开同一个页面时，能继续看之前的勾选、跟进标记和公告草稿。
+当前工作台界面与默认说明均为中文。演示只用于理解操作，没有真实成员或聊天记录。
 
 <a id="readme-section-7"></a>
 
-## 换成自己的已核验报告
+<a id="换成自己的已核验报告"></a>
+
+<a id="readme-detail-23"></a>
+
+## 📋 使用自己的核验报告
 
 ```bash
 python3 -B scripts/render_review_workbench.py \
@@ -144,20 +187,32 @@ python3 -B scripts/render_review_workbench.py \
 
 <a id="readme-section-8"></a>
 
-## 仓库导航
+<a id="仓库导航"></a>
 
-| 入口 | 内容 |
-| --- | --- |
-| [`SKILL.md`](SKILL.md) | Agent 使用规则与执行入口 |
-| [`docs/`](docs/) | 项目说明与参考文档 |
-| [`examples/`](examples/) | 可参考的输入与调用示例 |
-| [`references/`](references/) | 技能规则与输入输出合同 |
-| [`scripts/`](scripts/) | 开发与维护脚本 |
-| [`tests/`](tests/) | 自动化测试 |
+<a id="readme-detail-25"></a>
+
+## 🧩 模块速查
+
+按要处理的工作选择入口，先看模块职责，再进入对应文件或目录。
+
+| 模块入口 | 负责什么 | 什么时候看 |
+| --- | --- | --- |
+| [`SKILL.md`](SKILL.md) | Agent 使用规则与执行入口 | 让 Agent 读取任务规则、所需材料与交付要求 |
+| [`docs/`](docs/) | 项目说明与参考文档 | 查阅运行、设计与维护约定 |
+| [`examples/`](examples/) | 可参考的输入与调用示例 | 用现有样例核对输入格式和调用方式 |
+| [`references/`](references/) | 技能规则与输入输出合同 | 核对输入约定、操作细节与适用边界 |
+| [`scripts/`](scripts/) | 开发与维护脚本 | 查找构建、验证或维护的现有命令 |
+| [`tests/`](tests/) | 自动化测试 | 为修改选择对应的回归检查 |
 
 <a id="readme-section-9"></a>
 
-## 测试与贡献
+<a id="测试与贡献"></a>
+
+<a id="readme-detail-27"></a>
+
+## 🤝 测试与贡献
+
+修改后使用项目已有的检查入口核对结果，命令与检查范围如下。
 
 ```bash
 python3 -B -m unittest discover -s tests -p 'test_render_review_workbench.py' -v
